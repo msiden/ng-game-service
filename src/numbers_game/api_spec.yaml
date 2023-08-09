@@ -1,0 +1,93 @@
+openapi: 3.0.0
+
+info:
+  title: Numbr Guessr game service
+  version: 0.0.1
+
+paths:
+  /health_check:
+    get:
+      operationId: endpoints.health_check
+      summary: Perform a health check
+      responses:
+        '200':
+          description: Ok
+
+  /new_game:
+    post:
+      operationId: endpoints.new_game
+      summary: Start a new game
+      parameters:
+      - name: range
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+
+  /submit_guess/{id}:
+    post:
+      operationId: endpoints.submit_guess
+      summary: Guess a number
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: guess
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  answer:
+                    type: string
+                    enum:
+                      - lower
+                      - higher
+                      - correct
+                      - game-over
+                  guesses_left:
+                    type: integer
+                  correct_number:
+                    type: integer
+        '500':
+          description: Game not found
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response according to draft
+                properties:
+                  status:
+                    description: "HTTP error code"
+                    type: integer
+                  title:
+                    description: "Game ID was not found"
+                    type: string
+                  detail:
+                    description: "Detailed human readable error description"
+                    type: string
+                  type:
+                    description: "Problem type, ref to URI"
+                    type: string
+
