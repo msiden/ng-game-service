@@ -23,6 +23,11 @@ paths:
         required: true
         schema:
           type: integer
+      - name: max_guesses
+        in: query
+        required: true
+        schema:
+          type: integer
       responses:
         '200':
           description: Ok

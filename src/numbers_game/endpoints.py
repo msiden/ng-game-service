@@ -6,9 +6,9 @@ games = Games()
 def health_check() -> bool:
     return True
 
-def new_game(range: int) -> dict:
+def new_game(range: int, max_guesses: int) -> dict:
     return {
-        "id": games.new(range)
+        "id": games.new(range, max_guesses)
     }
 
 def submit_guess(id: str, guess: int) -> dict:
