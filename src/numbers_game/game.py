@@ -15,10 +15,11 @@ class Game:
     def __init__(self, range: int, max_guesses: int) -> None:
         self.id = str(uuid.uuid4())
         self.guesses_left = max_guesses
+        self.max_guesses = max_guesses
         self.number = random.randint(1, range)
         self.start_time = int(time.time())
         self.total_time = None
-        self.total_score = 0
+        self.total_score = None
 
     def guess(self, guess: int) -> dict:
         self.guesses_left -= 1
@@ -31,7 +32,9 @@ class Game:
         return {
             "answer": result,
             "guesses_left": self.guesses_left,
+            "max_guesses": self.max_guesses,
             "correct_number": self.number if game_over else None,
+            "start_time": self.start_time,
             "total_time": self.total_time,
             "total_score": self.total_score
         }
@@ -51,7 +54,8 @@ class Game:
     def _get_score(self) -> None:
         end_time = int(time.time())
         self.total_time = end_time - self.start_time
-
+        total_guesses = self.max_guesses - self.guesses_left
+        self.total_score = (self.total_time * total_guesses) * 100
 
 
 class Games:
